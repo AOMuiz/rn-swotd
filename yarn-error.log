@@ -1,0 +1,47 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Program Files\MongoDB\Server\5.0\bin;C:\Users\Opticrafts\AppData\Local\Programs\mongosh\;C:\Program Files\nodejs\;C:\Users\Opticrafts\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\Opticrafts\AppData\Local\Programs\Python\Python310\;C:\Users\Opticrafts\AppData\Local\Microsoft\WindowsApps;C:\Users\Opticrafts\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Opticrafts\AppData\Local\Yarn\bin;C:\Users\Opticrafts\AppData\Local\Programs\mongosh\;C:\Program Files\MongoDB\Server\5.0\bin;C:\Users\Opticrafts\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  16.13.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: 8328:error:1408F119:SSL routines:ssl3_get_record:decryption failed or bad record mac:c:\ws\deps\openssl\openssl\ssl\record\ssl3_record.c:677:
+
+npm manifest: 
+  {
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web",
+      "eject": "expo eject"
+    },
+    "dependencies": {
+      "expo": "~44.0.0",
+      "expo-status-bar": "~1.2.0",
+      "react": "17.0.1",
+      "react-dom": "17.0.1",
+      "react-native": "0.64.3",
+      "react-native-web": "0.17.1"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.12.9"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
