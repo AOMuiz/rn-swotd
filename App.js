@@ -66,6 +66,16 @@ export default function App() {
     return colors.darkgrey;
   };
 
+  const getAllLetterWithColor = (color) => {
+    return rows.flatMap((row, i) =>
+      row.filter((cell, j) => getCellBGColor(i, j) === color)
+    );
+  };
+
+  const greenCaps = getAllLetterWithColor(colors.primary);
+  const yellowCaps = getAllLetterWithColor(colors.secondary);
+  const greyCaps = getAllLetterWithColor(colors.darkgrey);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -95,8 +105,9 @@ export default function App() {
       </ScrollView>
       <Keyboard
         onKeyPressed={onKeyPressed}
-        greenCaps={["a", "b"]}
-        yellowCaps={["c", "h"]}
+        greenCaps={greenCaps}
+        yellowCaps={yellowCaps}
+        greyCaps={greyCaps}
       />
     </SafeAreaView>
   );
@@ -116,7 +127,6 @@ const styles = StyleSheet.create({
   },
   map: {
     alignSelf: "stretch",
-    height: 100,
     marginVertical: 20,
   },
   row: {
