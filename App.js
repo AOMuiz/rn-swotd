@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import Keyboard from "./src/components/Keyboard";
-import { colors } from "./src/constants";
+import { colors, CLEAR, ENTER } from "./src/constants";
 
 const NUMBER_OF_TRIES = 6;
 
@@ -20,9 +20,31 @@ export default function App() {
 
   const onKeyPressed = (key) => {
     const updatedRows = copyArray(rows);
-    updatedRows[curRow][curCol] = key;
-    setRows(updatedRows);
-    setCurCol(curCol + 1);
+
+    if (key === CLEAR) {
+      const prevCol = curCol - 1;
+      if (prevCol >= 0) {
+        updatedRows[curRow][prevCol] = "";
+        setRows(updatedRows);
+        setCurCol(prevCol);
+      }
+      return;
+    }
+
+    if (key === ENTER) {
+      if (curCol === rows[0].length) {
+        setCurRow(curRow + 1);
+        setCurCol(0);
+      }
+
+      return;
+    }
+
+    if (curCol < rows[0].length) {
+      updatedRows[curRow][curCol] = key;
+      setRows(updatedRows);
+      setCurCol(curCol + 1);
+    }
   };
 
   const iscellActive = (row, col) => {
