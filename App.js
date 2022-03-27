@@ -9,7 +9,7 @@ const NUMBER_OF_TRIES = 6;
 const copyArray = (arr) => [...arr.map((rows) => [...rows])];
 
 export default function App() {
-  const word = "Hello";
+  const word = "hello";
   const letters = word.split("");
 
   const [rows, setRows] = useState(
@@ -51,6 +51,21 @@ export default function App() {
     return row === curRow && col === curCol;
   };
 
+  const getCellBGColor = (row, col) => {
+    const letter = rows[row][col];
+
+    if (row >= curRow) {
+      return colors.black;
+    }
+    if (letter === letters[col]) {
+      return colors.primary;
+    }
+    if (letters.includes(letter)) {
+      return colors.secondary;
+    }
+    return colors.darkgrey;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -59,7 +74,7 @@ export default function App() {
       <ScrollView style={styles.map}>
         {rows.map((row, i) => (
           <View key={`row-${i}`} style={styles.row}>
-            {row.map((cell, j) => (
+            {row.map((letter, j) => (
               <View
                 key={`cell-${i}-${j}`}
                 style={[
@@ -68,16 +83,21 @@ export default function App() {
                     borderColor: iscellActive(i, j)
                       ? colors.lightgrey
                       : colors.darkgrey,
+                    backgroundColor: getCellBGColor(i, j),
                   },
                 ]}
               >
-                <Text style={styles.cellText}>{cell.toUpperCase()}</Text>
+                <Text style={styles.cellText}>{letter.toUpperCase()}</Text>
               </View>
             ))}
           </View>
         ))}
       </ScrollView>
-      <Keyboard onKeyPressed={onKeyPressed} />
+      <Keyboard
+        onKeyPressed={onKeyPressed}
+        greenCaps={["a", "b"]}
+        yellowCaps={["c", "h"]}
+      />
     </SafeAreaView>
   );
 }
