@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+} from "react-native";
 import Keyboard from "./src/components/Keyboard";
 import { colors, CLEAR, ENTER } from "./src/constants";
 
@@ -17,8 +24,38 @@ export default function App() {
   );
   const [curRow, setCurRow] = useState(0);
   const [curCol, setCurCol] = useState(0);
+  const [gameState, setGameState] = useState("playing"); //won, lost, playing
+
+  useEffect(() => {
+    if (curRow > 0) {
+      checkGameState();
+    }
+  }, [curRow]);
+
+  const checkGameState = () => {
+    if (checkIfWon()) {
+      Alert.alert("Hurray", "You won!");
+      setGameState("won");
+    } else if (checkIfLost()) {
+      Alert.alert("Heh", "Try Again tommorrow!");
+      setGameState("lost");
+    }
+  };
+
+  const checkIfWon = () => {
+    const row = rows[curRow - 1];
+    return row.every((letter, i) => letter === letters[i]);
+  };
+
+  const checkIfLost = () => {
+    return curRow === rows.length;
+  };
 
   const onKeyPressed = (key) => {
+    if (gameState !== "playing") {
+      return;
+    }
+
     const updatedRows = copyArray(rows);
 
     if (key === CLEAR) {
