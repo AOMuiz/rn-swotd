@@ -9,14 +9,28 @@ import {
   Alert,
 } from "react-native";
 import Keyboard from "./src/components/Keyboard";
-import { colors, CLEAR, ENTER } from "./src/constants";
+import { colors, CLEAR, ENTER, colorsToEmoji } from "./src/constants";
+import * as Clipboard from "expo-clipboard";
 
 const NUMBER_OF_TRIES = 6;
 
 const copyArray = (arr) => [...arr.map((rows) => [...rows])];
 
+const getDayOfTheYear = () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const day = Math.floor(diff / oneDay);
+  console.log(day);
+  return day;
+};
+
+const dayOfTheYear = getDayOfTheYear();
+const words = ["hello", "world", "good", "fantastic"];
+
 export default function App() {
-  const word = "hello";
+  const word = words[dayOfTheYear];
   const letters = word.split("");
 
   const [rows, setRows] = useState(
@@ -33,13 +47,29 @@ export default function App() {
   }, [curRow]);
 
   const checkGameState = () => {
-    if (checkIfWon()) {
-      Alert.alert("Hurray", "You won!");
+    if (checkIfWon() && gameState !== "won") {
+      Alert.alert("Hurray", "You won!", [
+        { text: "Share", onPress: shareScore },
+      ]);
       setGameState("won");
-    } else if (checkIfLost()) {
+    } else if (checkIfLost() && gameState !== "lost") {
       Alert.alert("Heh", "Try Again tommorrow!");
       setGameState("lost");
     }
+  };
+
+  const shareScore = () => {
+    const textMap = rows
+      .map((row, i) => {
+        row.map((cell, i) => colorsToEmoji[getCellBGColor(i, j)]).join("");
+      })
+      .filter((row) => row)
+      .join("\n");
+
+    const textToShare = `Wordle \n ${textMap}`;
+    Clipboard.setString(textToShare);
+    Alert.alert("Copied Successfully", "Share your score on social media");
+    console.log(textToShare);
   };
 
   const checkIfWon = () => {
@@ -48,7 +78,7 @@ export default function App() {
   };
 
   const checkIfLost = () => {
-    return curRow === rows.length;
+    return !checkIfWon() && curRow === rows.length;
   };
 
   const onKeyPressed = (key) => {
