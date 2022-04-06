@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, colorsToEmoji } from "../../constants";
 import * as Clipboard from "expo-clipboard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Number = ({ number, label }) => (
-  <View style={{ alignItems: "center" }}>
-    <Text style={{ color: colors.lightgrey, fontSize: 40, fontWeight: "bold" }}>
+  <View style={{ alignItems: "center", margin: 10 }}>
+    <Text style={{ color: colors.lightgrey, fontSize: 30, fontWeight: "bold" }}>
       {number}
     </Text>
-    <Text style={{ color: colors.lightgrey, fontSize: 20 }}>{label}</Text>
+    <Text style={{ color: colors.lightgrey, fontSize: 16 }}>{label}</Text>
   </View>
 );
 
@@ -55,15 +56,19 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
   const [curStreak, setCurStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
 
+  useEffect(() => {
+    readState();
+  }, []);
+
   const share = () => {
     const textMap = rows
-      .map((row, i) => {
-        row.map((cell, i) => colorsToEmoji[getCellBGColor(i, j)]).join("");
-      })
+      .map((row, i) =>
+        row.map((cell, j) => colorsToEmoji[getCellBGColor(i, j)]).join("")
+      )
       .filter((row) => row)
       .join("\n");
 
-    const textToShare = `Wordle \n ${textMap}`;
+    const textToShare = `Wordle \n${textMap}`;
     Clipboard.setString(textToShare);
     Alert.alert("Copied Successfully", "Share your score on social media");
     console.log(textToShare);
@@ -74,15 +79,15 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
       const now = new Date();
       const tommorrow = new Date(
         now.getFullYear(),
-        now.getMonth,
-        now.getDate + 1
+        now.getMonth(),
+        now.getDate() + 1
       );
       setSecondsTillTommorow((tommorrow - now) / 1000);
     };
 
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, [third]);
+  }, []);
 
   const formatSeconds = () => {
     const hours = Math.floor(secondsTillTommorow / (60 * 60));
@@ -92,8 +97,47 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
     return `${hours}:${minutes}:${seconds}`;
   };
 
+  const readState = async () => {
+    const dataString = await AsyncStorage.getItem("@game");
+    let data;
+    try {
+      data = JSON.parse(dataString);
+      console.log(data);
+    } catch (error) {
+      console.log("Couldn't parse state data");
+    }
+
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    setPlayed(keys.length);
+
+    const numberOfWins = values.filter(
+      (game) => game.gamesState === "won"
+    ).length;
+    setWinRate(Math.floor((100 * numberOfWins) / keys.length));
+
+    let _curStreak = 0;
+    let prevDay = 0;
+    keys.forEach((key) => {
+      const day = parseInt(key.split("-")[1]);
+      if (data[key].gamesState === "won" && prevDay + 1 === day) {
+        _curStreak += 1;
+      } else {
+        _curStreak = 1;
+      }
+      prevDay = day;
+    });
+    setCurStreak(_curStreak);
+  };
+
   return (
-    <View style={{ width: "100%", alignItems: "center" }}>
+    <View
+      style={{
+        width: "100%",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
       <Text style={styles.title}>
         {won ? "Congrats" : "Try again Tommorow"}
       </Text>

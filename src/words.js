@@ -98,4 +98,8 @@ export default [
   "error",
   "handling",
   "behavior",
+  "behavior",
+  "treeto",
+  "customize",
+  "error",
 ];

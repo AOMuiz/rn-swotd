@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Text, View, ScrollView, Alert, ActivityIndicator } from "react-native";
+import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import Keyboard from "../Keyboard/Keyboard";
-import { colors, CLEAR, ENTER, colorsToEmoji } from "../../constants";
-import * as Clipboard from "expo-clipboard";
+import { colors, CLEAR, ENTER } from "../../constants";
 import words from "../../words";
 import styles from "./Game.styles";
 import { copyArray, getDayOfTheYear, getDayKey } from "../../utils";
@@ -14,12 +13,9 @@ const NUMBER_OF_TRIES = 6;
 const dayOfTheYear = getDayOfTheYear();
 let dayKey = getDayKey();
 
-const game = {};
-
 const Game = () => {
   const word = words[dayOfTheYear];
   const letters = word.split("");
-
   // console.log(words.length);
 
   const [rows, setRows] = useState(
@@ -60,12 +56,12 @@ const Game = () => {
     try {
       const existingStateString = await AsyncStorage.getItem("@game");
       let existingState = existingStateString
-        ? JOSN.parse(existingStateString)
+        ? JSON.parse(existingStateString)
         : {};
 
       existingState[dayKey] = dataForToday;
 
-      const dataString = JSON.stringify(data);
+      const dataString = JSON.stringify(existingState);
       await AsyncStorage.setItem("@game", dataString);
     } catch (error) {
       console.log("error, failed to write data to asyncStorage", error);
