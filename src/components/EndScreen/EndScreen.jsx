@@ -99,6 +99,7 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
 
   const readState = async () => {
     const dataString = await AsyncStorage.getItem("@game");
+    console.log(JSON.parse(dataString));
     let data;
     try {
       data = JSON.parse(dataString);
@@ -109,25 +110,33 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
 
     const keys = Object.keys(data);
     const values = Object.values(data);
+
     setPlayed(keys.length);
 
     const numberOfWins = values.filter(
-      (game) => game.gamesState === "won"
+      (game) => game.gameState === "won"
     ).length;
     setWinRate(Math.floor((100 * numberOfWins) / keys.length));
 
     let _curStreak = 0;
+    let maxStreak = 0;
     let prevDay = 0;
     keys.forEach((key) => {
       const day = parseInt(key.split("-")[1]);
-      if (data[key].gamesState === "won" && prevDay + 1 === day) {
+      if (data[key].gameState === "won" && _curStreak === 0) {
+        _curStreak += 1;
+      } else if (data[key].gameState === "won" && prevDay + 1 === day) {
         _curStreak += 1;
       } else {
-        _curStreak = 1;
+        if (_curStreak > maxStreak) {
+          maxStreak = _curStreak;
+        }
+        _curStreak = data[key].gameState === "won" ? 1 : 0;
       }
       prevDay = day;
     });
     setCurStreak(_curStreak);
+    setMaxStreak(maxStreak);
   };
 
   return (

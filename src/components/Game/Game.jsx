@@ -78,7 +78,7 @@ const Game = () => {
       setCurCol(day.curCol);
       setcol(day.col);
     } catch (error) {
-      console.log("Couldn't parse state data");
+      console.log("Couldn't parse state data", error);
     }
     console.log(dataString);
 
