@@ -1,8 +1,16 @@
-import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  Alert,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, colorsToEmoji } from "../../constants";
 import * as Clipboard from "expo-clipboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GuessDistribution from "../GuessDistribution";
 
 const Number = ({ number, label }) => (
   <View style={{ alignItems: "center", margin: 10 }}>
@@ -13,48 +21,13 @@ const Number = ({ number, label }) => (
   </View>
 );
 
-const GuessDistributionLine = ({ position, amount, percentage }) => (
-  <View
-    style={{
-      flexDirection: "row",
-      alignItems: "center",
-      width: "100%",
-    }}
-  >
-    <Text style={{ color: colors.lightgrey }}>{position}</Text>
-    <View
-      style={{
-        alignSelf: "stretch",
-        backgroundColor: colors.lightgrey,
-        alignItems: "center",
-        margin: 5,
-        padding: 5,
-        width: `${percentage}%`,
-      }}
-    >
-      <Text style={{ color: colors.lightgrey, fontSize: 20 }}>{amount}</Text>
-    </View>
-  </View>
-);
-
-const GuessDistribution = () => {
-  return (
-    <>
-      <Text style={styles.subTitle}>GUESS DISTRIBUTION</Text>
-      <View style={{ width: "100%", padding: 20 }}>
-        <GuessDistributionLine position={0} amount={2} percentage={50} />
-        <GuessDistributionLine position={3} amount={2} percentage={70} />
-      </View>
-    </>
-  );
-};
-
 const EndScreen = ({ won = false, rows, getCellBGColor }) => {
   const [secondsTillTommorow, setSecondsTillTommorow] = useState(0);
   const [played, setPlayed] = useState(0);
   const [winRate, setWinRate] = useState(0);
   const [curStreak, setCurStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
+  const [distribution, setDistribution] = useState(null);
 
   useEffect(() => {
     readState();
@@ -137,16 +110,21 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
     });
     setCurStreak(_curStreak);
     setMaxStreak(maxStreak);
+
+    // guess distribution
+    const dist = [0, 0, 0, 0, 0, 0];
+
+    values.map((game) => {
+      if (game.gameState === "won") {
+        const tries = game.rows.filter((row) => row[0]).length;
+        dist[tries] = dist[tries] + 1;
+      }
+    });
+    setDistribution(dist);
   };
 
   return (
-    <View
-      style={{
-        width: "100%",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
+    <View style={styles.container}>
       <Text style={styles.title}>
         {won ? "Congrats" : "Try again Tommorow"}
       </Text>
@@ -157,7 +135,7 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
         <Number number={curStreak} label={"Cur streak"} />
         <Number number={maxStreak} label={"Max streak"} />
       </View>
-      <GuessDistribution />
+      <GuessDistribution distribution={distribution} />
       <View style={{ flexDirection: "row" }}>
         <View style={{ alignItems: "center", flex: 1 }}>
           <Text style={{ color: colors.lightgrey }}>Next Wordle</Text>
@@ -191,6 +169,11 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
 export default EndScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+    height: "100%",
+  },
   title: {
     fontSize: 30,
     color: "white",
