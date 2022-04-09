@@ -22,7 +22,7 @@ const Game = () => {
   // AsyncStorage.removeItem("@game");
   const word = words[dayOfTheYear];
   const letters = word.split("");
-  // console.log(words.length);
+  console.log(word);
 
   const [rows, setRows] = useState(
     new Array(NUMBER_OF_TRIES).fill(new Array(letters.length).fill(""))
@@ -198,14 +198,14 @@ const Game = () => {
         {rows.map((row, i) => (
           <Animated.View
             entering={SlideInLeft.delay(i * 40)}
-            key={`row-${i}`}
+            key={`row-${i}}`}
             style={styles.row}
           >
             {row.map((letter, j) => (
               <>
                 {i < curRow && (
                   <Animated.View
-                    enetering={FlipInEasyY.delay(j * 100)}
+                    entering={FlipInEasyY.delay(j * 100)}
                     key={`cell-color-${i}-${j}`}
                     style={getCellStyle(i, j)}
                   >

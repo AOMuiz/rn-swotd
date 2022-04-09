@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { scale } from "react-native-size-matters";
 import { colors } from "../../constants";
 
 export default StyleSheet.create({
@@ -15,15 +16,15 @@ export default StyleSheet.create({
     borderColor: colors.grey,
     borderWidth: 3,
     flex: 1,
-    maxWidth: 70,
+    maxWidth: scale(70),
     aspectRatio: 1,
-    margin: 3,
+    margin: scale(3),
     justifyContent: "center",
     alignItems: "center",
   },
   cellText: {
     color: colors.lightgrey,
     fontWeight: "bold",
-    fontSize: 28,
+    fontSize: scale(20),
   },
 });

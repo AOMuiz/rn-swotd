@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { colors } from "../../constants";
+import { scale } from "react-native-size-matters";
 
 const GuessDistributionLine = ({ position, amount, percentage }) => (
   <View
@@ -53,11 +54,11 @@ export default GuessDistribution;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 30,
+    fontSize: scale(30),
     color: "white",
   },
   subTitle: {
-    fontSize: 20,
+    fontSize: scale(20),
     color: colors.lightgrey,
     textAlign: "center",
     marginVertical: 15,

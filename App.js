@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text } from "react-native";
+import { scale } from "react-native-size-matters";
 import Game from "./src/components/Game";
 import Screen from "./src/components/Screen";
 import { colors } from "./src/constants";
@@ -20,8 +21,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.lightgrey,
-    fontSize: 32,
+    fontSize: scale(30),
     fontWeight: "bold",
-    letterSpacing: 7,
+    letterSpacing: scale(7),
   },
 });
