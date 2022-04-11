@@ -23,7 +23,7 @@ $ yarn start
 
 ## A brief description of the project
 
-## Features
+### Features
 
 - Guess the `scientific word of the day` (SWOTD)
 
@@ -45,7 +45,7 @@ More advance (needs some backend):
 - save the stats in a database
 - public dashboard
 
-## Technologies Used
+### Technologies Used
 
 1. Implemented app navigation with `react-navigation`.
 
