@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { scale } from "react-native-size-matters";
 import Game from "./src/components/Game";
 import Screen from "./src/components/Screen";
@@ -7,17 +6,20 @@ import { colors } from "./src/constants";
 
 export default function App() {
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="light" />
-      <Text style={styles.title}>WORDLE</Text>
+      <Text style={styles.title}>SWOTD</Text>
       <Game />
-    </Screen>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.black,
+    alignItems: "center",
+    paddingTop: StatusBar.currentHeight,
   },
   title: {
     color: colors.lightgrey,

@@ -51,7 +51,7 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
       .filter((row) => row)
       .join("\n");
 
-    const textToShare = `Wordle \n${textMap}`;
+    const textToShare = `Sci-WOTD \n${textMap}`;
     Clipboard.setString(textToShare);
     Alert.alert("Copied Successfully", "Share your score on social media");
     console.log(textToShare);
@@ -134,67 +134,72 @@ const EndScreen = ({ won = false, rows, getCellBGColor }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Animated.Text
-        entering={SlideInLeft.springify().mass(0.5)}
-        style={styles.title}
-      >
-        {won ? "Congrats" : "Try again Tommorow"}
-      </Animated.Text>
+    <ScrollView style={styles.scroll}>
+      <View style={styles.container}>
+        <Animated.Text
+          entering={SlideInLeft.springify().mass(0.5)}
+          style={styles.title}
+        >
+          {won ? "Congrats" : "Try again Tommorow"}
+        </Animated.Text>
 
-      <Animated.View entering={SlideInLeft.delay(100).springify().mass(0.5)}>
-        <Text style={styles.subTitle}>STATISTICS</Text>
-        <View style={{ flexDirection: "row" }}>
-          <Number number={played} label={"Played"} />
-          <Number number={winRate} label={"Win %"} />
-          <Number number={curStreak} label={"Cur streak"} />
-          <Number number={maxStreak} label={"Max streak"} />
-        </View>
-      </Animated.View>
+        <Animated.View entering={SlideInLeft.delay(100).springify().mass(0.5)}>
+          <Text style={styles.subTitle}>STATISTICS</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Number number={played} label={"Played"} />
+            <Number number={winRate} label={"Win %"} />
+            <Number number={curStreak} label={"Cur streak"} />
+            <Number number={maxStreak} label={"Max streak"} />
+          </View>
+        </Animated.View>
 
-      <Animated.View
-        entering={SlideInLeft.delay(200).springify().mass(0.5)}
-        style={{ width: "100%" }}
-      >
-        <GuessDistribution distribution={distribution} />
-      </Animated.View>
+        <Animated.View
+          entering={SlideInLeft.delay(200).springify().mass(0.5)}
+          style={{ width: "100%" }}
+        >
+          <GuessDistribution distribution={distribution} />
+        </Animated.View>
 
-      <Animated.View
-        entering={SlideInLeft.delay(200).springify().mass(0.5)}
-        style={{ flexDirection: "row", padding: scale(10) }}
-      >
-        <View style={{ alignItems: "center", flex: 1 }}>
-          <Text style={{ color: colors.lightgrey }}>Next Wordle</Text>
-          <Text
+        <Animated.View
+          entering={SlideInLeft.delay(200).springify().mass(0.5)}
+          style={{ flexDirection: "row", padding: scale(10) }}
+        >
+          <View style={{ alignItems: "center", flex: 1 }}>
+            <Text style={{ color: colors.lightgrey }}>Next Sci-WOTD</Text>
+            <Text
+              style={{
+                color: colors.lightgrey,
+                fontSize: scale(24),
+                fontWeight: "bold",
+              }}
+            >
+              {formatSeconds()}
+            </Text>
+          </View>
+          <Pressable
+            onPress={share}
             style={{
-              color: colors.lightgrey,
-              fontSize: scale(24),
-              fontWeight: "bold",
+              flex: 1,
+              backgroundColor: colors.primary,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: scale(25),
             }}
           >
-            {formatSeconds()}
-          </Text>
-        </View>
-        <Pressable
-          onPress={share}
-          style={{
-            flex: 1,
-            backgroundColor: colors.primary,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: scale(25),
-          }}
-        >
-          <Text style={{ color: colors.lightgrey }}>Share</Text>
-        </Pressable>
-      </Animated.View>
-    </View>
+            <Text style={{ color: colors.lightgrey }}>Share</Text>
+          </Pressable>
+        </Animated.View>
+      </View>
+    </ScrollView>
   );
 };
 
 export default EndScreen;
 
 const styles = StyleSheet.create({
+  scroll: {
+    width: "100%",
+  },
   container: {
     width: "100%",
     alignItems: "center",

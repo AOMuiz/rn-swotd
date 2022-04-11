@@ -16,8 +16,8 @@ const GuessDistributionLine = ({ position, amount, percentage }) => (
       style={{
         alignSelf: "stretch",
         backgroundColor: colors.grey,
-        margin: 5,
-        padding: 5,
+        margin: scale(5),
+        padding: scale(5),
         width: `${percentage}%`,
         minWidth: 20,
       }}

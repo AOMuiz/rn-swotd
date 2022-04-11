@@ -1,29 +1,29 @@
 {
   "expo": {
-    "name": "rn-wordle",
-    "slug": "rn-wordle",
+    "name": "Sci-WOTD",
+    "slug": "SWOTD",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#000000"
+      },
+      "package": "com.aomuiz.swotd",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
