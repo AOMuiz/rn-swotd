@@ -15,7 +15,7 @@ $ cd rn-wordle
 $ yarn install
 ```
 
-### Run Development Server
+- Run Development Server
 
 ```
 $ yarn start
@@ -31,14 +31,16 @@ $ yarn start
 
 - Save current progress in AsyncStorage, so that if we close the App, we can continue.
 
-- Keep track of the stats:
+- Keep track of the stats(Streak system):
 
   - number of games played
   - win rate
   - current streak
   - max streak
 
-- Animations
+- Animations for guess word and keyboard
+
+### Todo
 
 More advance (needs some backend):
 
